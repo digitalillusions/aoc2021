@@ -1,7 +1,9 @@
 mod day_one;
+mod day_two;
 
 use std::env;
 use day_one::day_one;
+use day_two::day_two;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -10,6 +12,7 @@ fn main() {
         println!("Running day {}", day);
         match day.as_str() {
             "01" => day_one(),
+            "02" => day_two(),
             _ => println!("\tNot implemented yet"),
         };
     } else {
