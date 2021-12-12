@@ -5,7 +5,7 @@ use std::io::{self, BufRead, Error};
 pub fn day_twelve() {
     println!("Part 1");
 
-    let file = fs::File::open("resources/12/sample.txt").unwrap();
+    let file = fs::File::open("resources/12/example1.txt").unwrap();
     let lines = io::BufReader::new(file).lines();
 
     let mut graph = HashMap::<String, Vec<String>>::new();
@@ -31,10 +31,16 @@ pub fn day_twelve() {
         }
     }
 
-    println!("Graph {:?}", graph);
+    // println!("Graph {:?}", graph);
 
-    let num_paths = count_paths(&graph, "start".to_string(), "start".to_string());
-	println!("Counted Paths: {}", num_paths.unwrap());
+    // let num_paths = count_paths(&graph, "start".to_string(), "start".to_string());
+    // println!("Counted Paths: {}", num_paths.unwrap());
+
+    println!("Part 2");
+    println!("Graph {:?}", graph);
+    let num_paths =
+        count_paths_with_small_cave_twice(&graph, "start".to_string(), "start".to_string(), false);
+    println!("Counted Paths: {}", num_paths.unwrap());
 }
 
 fn count_paths(
@@ -44,10 +50,10 @@ fn count_paths(
 ) -> Result<u32, Error> {
     let mut num_paths = 0;
 
-	if current_node == "end" {
-		println!("Found path: {}", current_path.clone());
-		return Ok(1);
-	}
+    if current_node == "end" {
+        println!("Found path: {}", current_path.clone());
+        return Ok(1);
+    }
 
     for connection in graph.get(&current_node).unwrap() {
         if (connection.to_lowercase() == connection.clone())
@@ -60,6 +66,45 @@ fn count_paths(
             graph,
             current_path.clone() + "-" + connection,
             connection.clone(),
+        )
+        .unwrap();
+    }
+    Ok(num_paths)
+}
+
+fn count_paths_with_small_cave_twice(
+    graph: &HashMap<String, Vec<String>>,
+    current_path: String,
+    current_node: String,
+    mut visited_small_twice: bool,
+) -> Result<u32, Error> {
+    let mut num_paths = 0;
+
+    if current_node == "end" {
+        println!("Found path: {}", current_path.clone());
+        return Ok(1);
+    }
+
+    for connection in graph.get(&current_node).unwrap() {
+        if (connection.to_lowercase() == connection.clone())
+            && current_path.clone().contains(connection)
+			&& !visited_small_twice
+        {
+			visited_small_twice = true;
+        } 
+		else if (connection.to_lowercase() == connection.clone())
+            && current_path.clone().contains(connection)
+			&& visited_small_twice
+		{
+			continue;
+		}
+
+
+        num_paths += count_paths_with_small_cave_twice(
+            graph,
+            current_path.clone() + "-" + connection,
+            connection.clone(),
+			visited_small_twice
         )
         .unwrap();
     }
