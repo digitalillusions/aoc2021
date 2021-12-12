@@ -1,5 +1,5 @@
-use std::fs;
 use core::panic;
+use std::fs;
 
 pub fn day_one() {
     let contents: Vec<usize> = fs::read_to_string("resources/01/sample.txt")
