@@ -3,9 +3,7 @@ use std::fs;
 use std::io::{self, BufRead, Error};
 
 pub fn day_twelve() {
-    println!("Part 1");
-
-    let file = fs::File::open("resources/12/example1.txt").unwrap();
+    let file = fs::File::open("resources/12/sample.txt").unwrap();
     let lines = io::BufReader::new(file).lines();
 
     let mut graph = HashMap::<String, Vec<String>>::new();
@@ -23,24 +21,22 @@ pub fn day_twelve() {
             .or_insert_with(Vec::<String>::new)
             .push(connection[1].clone());
 
-        if connection[0] != "start" && connection[1] != "end" {
-            graph
-                .entry(connection[1].clone())
-                .or_insert_with(Vec::<String>::new)
-                .push(connection[0].clone());
-        }
+        graph
+            .entry(connection[1].clone())
+            .or_insert_with(Vec::<String>::new)
+            .push(connection[0].clone());
     }
 
-    // println!("Graph {:?}", graph);
+    println!("Graph {:?}", graph);
 
-    // let num_paths = count_paths(&graph, "start".to_string(), "start".to_string());
-    // println!("Counted Paths: {}", num_paths.unwrap());
+    println!("Part 1");
+    let num_paths = count_paths(&graph, "start".to_string(), "start".to_string());
+    println!("\tCounted Paths: {}", num_paths.unwrap());
 
     println!("Part 2");
-    println!("Graph {:?}", graph);
     let num_paths =
-        count_paths_with_small_cave_twice(&graph, "start".to_string(), "start".to_string(), false);
-    println!("Counted Paths: {}", num_paths.unwrap());
+        count_paths_with_small_cave_twice(&graph, "start".to_string(), "start".to_string(), "".to_string());
+    println!("\tCounted Paths: {}", num_paths.unwrap());
 }
 
 fn count_paths(
@@ -51,8 +47,11 @@ fn count_paths(
     let mut num_paths = 0;
 
     if current_node == "end" {
-        println!("Found path: {}", current_path.clone());
+        // println!("Found path: {}", current_path.clone());
         return Ok(1);
+    }
+    else if current_node == "start" && current_path != "start" {
+        return Ok(0);
     }
 
     for connection in graph.get(&current_node).unwrap() {
@@ -76,35 +75,45 @@ fn count_paths_with_small_cave_twice(
     graph: &HashMap<String, Vec<String>>,
     current_path: String,
     current_node: String,
-    mut visited_small_twice: bool,
+    visited_small_twice: String,
 ) -> Result<u32, Error> {
     let mut num_paths = 0;
 
     if current_node == "end" {
-        println!("Found path: {}", current_path.clone());
+        // println!("Found path: {}, visited_twice {}", current_path.clone(), visited_small_twice);
         return Ok(1);
+    }
+    else if current_node == "start" && current_path != "start" {
+        return Ok(0);
     }
 
     for connection in graph.get(&current_node).unwrap() {
         if (connection.to_lowercase() == connection.clone())
-            && current_path.clone().contains(connection)
-			&& !visited_small_twice
+            && (current_path.contains(connection))
         {
-			visited_small_twice = true;
-        } 
-		else if (connection.to_lowercase() == connection.clone())
-            && current_path.clone().contains(connection)
-			&& visited_small_twice
-		{
-			continue;
-		}
+            let count_occurences = current_path.clone().matches(connection).count();
+
+            if visited_small_twice.clone() == "" {
+                num_paths += count_paths_with_small_cave_twice(
+                    graph,
+                    current_path.clone() + "-" + connection,
+                    connection.clone(),
+                    connection.clone()
+                )
+                .unwrap();
+                continue;
+            }
+            else{
+                continue;
+            }
+        }
 
 
         num_paths += count_paths_with_small_cave_twice(
             graph,
             current_path.clone() + "-" + connection,
             connection.clone(),
-			visited_small_twice
+			visited_small_twice.clone()
         )
         .unwrap();
     }
