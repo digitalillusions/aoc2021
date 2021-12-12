@@ -1,9 +1,11 @@
 mod day_one;
 mod day_three;
+mod day_twelve;
 mod day_two;
 
 use day_one::day_one;
 use day_three::day_three;
+use day_twelve::day_twelve;
 use day_two::day_two;
 use std::env;
 
@@ -16,6 +18,7 @@ fn main() {
             "01" => day_one(),
             "02" => day_two(),
             "03" => day_three(),
+            "12" => day_twelve(),
             _ => println!("\tNot implemented yet"),
         };
     } else {

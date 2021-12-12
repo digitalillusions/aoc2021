@@ -103,13 +103,24 @@ pub fn day_three() {
             .collect();
     }
 
-    let oxygen_generator_str: String = filter_oxygen[0].iter().map(|item| item.to_string()).collect::<Vec<String>>().join("");
-    let co2_scrubber_str: String = filter_co2[0].iter().map(|item| item.to_string()).collect::<Vec<String>>().join("");
+    let oxygen_generator_str: String = filter_oxygen[0]
+        .iter()
+        .map(|item| item.to_string())
+        .collect::<Vec<String>>()
+        .join("");
+    let co2_scrubber_str: String = filter_co2[0]
+        .iter()
+        .map(|item| item.to_string())
+        .collect::<Vec<String>>()
+        .join("");
 
     let oxygen_generator_dec = u32::from_str_radix(&oxygen_generator_str, 2).unwrap();
     let co2_scrubber_dec = u32::from_str_radix(&co2_scrubber_str, 2).unwrap();
 
     println!("\tOxygen Generator: {}", oxygen_generator_str);
     println!("\tCO2 Scrubber: {}", co2_scrubber_str);
-    println!("\tSolution Part 2: {}", oxygen_generator_dec * &co2_scrubber_dec);
+    println!(
+        "\tSolution Part 2: {}",
+        oxygen_generator_dec * &co2_scrubber_dec
+    );
 }
