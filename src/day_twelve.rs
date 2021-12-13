@@ -91,8 +91,6 @@ fn count_paths_with_small_cave_twice(
         if (connection.to_lowercase() == connection.clone())
             && (current_path.contains(connection))
         {
-            let count_occurences = current_path.clone().matches(connection).count();
-
             if visited_small_twice.clone() == "" {
                 num_paths += count_paths_with_small_cave_twice(
                     graph,
