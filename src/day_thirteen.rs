@@ -64,7 +64,7 @@ pub fn day_thirteen() {
         );
     }
 
-	println!("Part 2");
+    println!("Part 2");
     let mut sorted_coords = Vec::from_iter(coords.iter().map(|(x, y)| (y, x)));
     sorted_coords.sort();
     let mut x_last = 0;

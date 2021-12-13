@@ -1,18 +1,34 @@
 use std::fs;
 use std::io::{self, BufRead};
 
-pub fn day_four(){
-	let file = fs::File::open("resources/04/example1.txt").unwrap();
-	let mut lines = io::BufReader::new(file).lines();
-	let number_sequence = lines.next().unwrap().unwrap().split(" ").map(|item| item.parse::<u32>().unwrap()).collect::<Vec<_>>();
-	lines.next();
+pub fn day_four() {
+    let file = fs::File::open("resources/04/example1.txt").unwrap();
+    let mut lines = io::BufReader::new(file).lines();
+    let number_sequence = lines
+        .next()
+        .unwrap()
+        .unwrap()
+        .split(",")
+        .map(|item| item.parse::<u32>().unwrap())
+        .collect::<Vec<_>>();
+    lines.next();
 
-	let mut boards = Vec::<[[u32; 5]; 5]>::new();
+    let mut boards = Vec::<Vec<Vec<(u32, bool)>>>::new();
 
-	let mut counter = 0;
-	for line in lines {
-		let board_line = line.unwrap().trim().split(" ").filter(|&item| item != "" ).map(|item| item.parse::<u32>().unwrap()).collect::<Vec<u32>>();
-	}
+    let mut counter = 0;
+    for line in lines {
+        if line.as_ref().unwrap() != "" {
+            println!("Line: {}", line.as_ref().unwrap());
+            let board_line = line
+                .unwrap()
+                .trim()
+                .split(" ")
+                .filter(|&item| item != "")
+                .map(|item| (item.parse::<u32>().unwrap(), false))
+                .collect::<Vec<(u32, bool)>>();
+            println!("Board Line: {:?}", board_line);
+        }
+    }
 
-	println!("Part 1");
+    println!("Part 1");
 }
