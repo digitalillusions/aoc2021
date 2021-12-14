@@ -6,7 +6,7 @@ pub fn day_fourteen() {
     let file = fs::File::open("resources/14/sample.txt").unwrap();
     let mut lines = io::BufReader::new(file).lines();
 
-    let mut template = lines
+    let template = lines
         .next()
         .unwrap()
         .unwrap()
@@ -31,7 +31,7 @@ pub fn day_fourteen() {
         rules.insert((ab.next().unwrap(), ab.next().unwrap()), c);
     }
 
-    println!("Part 1");
+    println!("Part 1 & 2");
 
     let mut template_pair_counts = HashMap::new();
     for ab in template.windows(2) {
