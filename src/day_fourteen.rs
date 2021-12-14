@@ -10,52 +10,66 @@ pub fn day_fourteen() {
         .next()
         .unwrap()
         .unwrap()
-		.trim()
+        .trim()
         .split("")
-		.filter(|x| !x.is_empty())
-		.map(|x| x.parse::<char>().unwrap())
+        .filter(|x| !x.is_empty())
+        .map(|x| x.parse::<char>().unwrap())
         .collect::<Vec<_>>();
 
-    println!("Template: {:?}", template);
+    lines.next();
 
-	lines.next();
+    let mut rules = HashMap::new();
 
-	let mut rules = HashMap::new();
+    for line in lines {
+        let rule = line
+            .unwrap()
+            .split(" -> ")
+            .map(str::to_string)
+            .collect::<Vec<_>>();
+        let mut ab = rule[0].chars();
+        let c = rule[1].parse::<char>().unwrap();
+        rules.insert((ab.next().unwrap(), ab.next().unwrap()), c);
+    }
 
-	for line in lines{
-		let rule = line.unwrap().split(" -> ").map(str::to_string).collect::<Vec<_>>();
-		let mut ab = rule[0].chars();
-		let c = rule[1].parse::<char>().unwrap();
-		rules.insert((ab.next().unwrap(), ab.next().unwrap()), c);
-	}
+    println!("Part 1");
 
-	println!("Rules: {:?}", rules);
-	
-	println!("Part 1");
+    let mut template_pair_counts = HashMap::new();
+    for ab in template.windows(2) {
+        template_pair_counts
+            .entry((ab[0], ab[1]))
+            .and_modify(|x| *x += 1)
+            .or_insert(1 as u64);
+    }
 
-	let mut template_pair_counts = HashMap::new();
-	for ab in template.windows(2){
-		template_pair_counts.entry((ab[0], ab[1])).and_modify(|x| *x+=1).or_insert(1);
-	}
+	let iter_count = 40;
+    for i in 0..iter_count {
+        let mut polymer_chain_pair_counts = HashMap::new();
 
+        for ((a, b), cnt) in template_pair_counts {
+            let c = rules.get(&(a, b)).unwrap().clone();
+            polymer_chain_pair_counts
+                .entry((a, c))
+                .and_modify(|x| *x += cnt)
+                .or_insert(cnt);
+            polymer_chain_pair_counts
+                .entry((c, b))
+                .and_modify(|x| *x += cnt)
+                .or_insert(cnt);
+        }
 
-	for i in 0..10{
-		let mut polymer_chain = Vec::new();
+        let mut counts = HashMap::new();
+        for ((a, _), cnt) in polymer_chain_pair_counts.clone() {
+            counts.entry(a).and_modify(|x| *x += cnt).or_insert(cnt);
+        }
+		counts.entry(template.last().unwrap().clone()).and_modify(|x| *x+=1).or_insert(1);
 
-		polymer_chain.push(template.first().unwrap().clone());
-		for ab in template.windows(2){
-			polymer_chain.extend_from_slice(&[*rules.get(&(ab[0],ab[1])).unwrap(), ab[1]]);
+        template_pair_counts = polymer_chain_pair_counts;
+
+        let most_common = counts.iter().max_by_key(|(_, a2)| *a2).unwrap();
+        let least_common = counts.iter().min_by_key(|(_, a2)| *a2).unwrap();
+
+		if i == 39 || i == 9{
+			println!("\tIteration {}\n\tCounts {:?}\n\tMost Common {:?}\n\tLeast Common {:?}\n\tSolution {}\n\t", i+1, counts, most_common, least_common, most_common.1-least_common.1);
 		}
-
-		let mut counts = HashMap::new();
-		for a in &polymer_chain{
-			counts.entry(a.clone()).and_modify(|x| *x += 1).or_insert(1 as u32);
-		}
-		template = polymer_chain;
-
-		let most_common = counts.iter().max_by_key(|(_, a2)| *a2).unwrap();
-		let least_common = counts.iter().min_by_key(|(_, a2)| *a2).unwrap();
-
-		println!("\tIteration {} Length {}\n\tCounts {:?}\n\tMost Common {:?}\n\tLeast Common {:?}\n\tSolution {}\n\t", i+1, template.len(), counts, most_common, least_common, most_common.1-least_common.1);
-	}
+    }
 }
