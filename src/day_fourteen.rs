@@ -41,7 +41,7 @@ pub fn day_fourteen() {
             .or_insert(1 as u64);
     }
 
-	let iter_count = 40;
+    let iter_count = 40;
     for i in 0..iter_count {
         let mut polymer_chain_pair_counts = HashMap::new();
 
@@ -61,15 +61,18 @@ pub fn day_fourteen() {
         for ((a, _), cnt) in polymer_chain_pair_counts.clone() {
             counts.entry(a).and_modify(|x| *x += cnt).or_insert(cnt);
         }
-		counts.entry(template.last().unwrap().clone()).and_modify(|x| *x+=1).or_insert(1);
+        counts
+            .entry(template.last().unwrap().clone())
+            .and_modify(|x| *x += 1)
+            .or_insert(1);
 
         template_pair_counts = polymer_chain_pair_counts;
 
         let most_common = counts.iter().max_by_key(|(_, a2)| *a2).unwrap();
         let least_common = counts.iter().min_by_key(|(_, a2)| *a2).unwrap();
 
-		if i == 39 || i == 9{
-			println!("\tIteration {}\n\tCounts {:?}\n\tMost Common {:?}\n\tLeast Common {:?}\n\tSolution {}\n\t", i+1, counts, most_common, least_common, most_common.1-least_common.1);
-		}
+        if i == 39 || i == 9 {
+            println!("\tIteration {}\n\tCounts {:?}\n\tMost Common {:?}\n\tLeast Common {:?}\n\tSolution {}\n\t", i+1, counts, most_common, least_common, most_common.1-least_common.1);
+        }
     }
 }
