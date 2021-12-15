@@ -1,12 +1,13 @@
+mod day_eight;
 mod day_four;
 mod day_fourteen;
 mod day_one;
 mod day_thirteen;
 mod day_three;
 mod day_twelve;
-mod day_eight;
 mod day_two;
 
+use day_eight::day_eight;
 use day_four::day_four;
 use day_fourteen::day_fourteen;
 use day_one::day_one;
@@ -14,7 +15,6 @@ use day_thirteen::day_thirteen;
 use day_three::day_three;
 use day_twelve::day_twelve;
 use day_two::day_two;
-use day_eight::day_eight;
 
 use std::env;
 
