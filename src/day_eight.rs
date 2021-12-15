@@ -19,10 +19,15 @@ pub fn day_eight() {
             })
             .collect::<Vec<_>>();
 
-        digits_values_map.push((contents[0].clone(), contents[1].clone(), HashMap::new()));
+        digits_values_map.push((
+            contents[0].clone(),
+            contents[1].clone(),
+            HashMap::new(),
+            Vec::new(),
+        ));
     }
 
-    for (digits, _, map) in digits_values_map.iter_mut() {
+    for (digits, _, map, _) in digits_values_map.iter_mut() {
         let loc_one = digits.iter().position(|x| x.len() == 2).unwrap();
         let digit_one = digits.swap_remove(loc_one);
         map.insert(digit_one, 1);
@@ -78,10 +83,39 @@ pub fn day_eight() {
         map.insert(digits.remove(0), 2);
     }
 
-	println!("Part 1");
-    for (_, values, map) in digits_values_map {
+    println!("Part 1");
+    let mut sum_1478 = 0;
+    for (_, values, map, values_dec) in digits_values_map.iter_mut() {
+        *values_dec = values
+            .iter()
+            .map(|item| map.get(item).unwrap())
+            .cloned()
+            .collect::<Vec<_>>();
+        sum_1478 += values_dec
+            .iter()
+            .map(|&x| {
+                if (x == 1) || (x == 4) || (x == 7) || (x == 8) {
+                    return 1;
+                } else {
+                    0
+                }
+            })
+            .sum::<i32>();
+    }
 
-	}
+    println!("\tNum of 1, 4, 7 or 8: {}", sum_1478);
 
-    println!("Input {:?}", digits_values_map[0]);
+    println!("Part 2");
+    let mut sum = 0;
+    for (_, _, _, values_dec) in digits_values_map {
+        sum += values_dec
+            .iter()
+            .map(i32::to_string)
+            .collect::<Vec<_>>()
+            .join("")
+            .parse::<i32>()
+            .unwrap();
+    }
+
+    println!("\tSum of values: {}", sum);
 }
