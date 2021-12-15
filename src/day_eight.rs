@@ -103,7 +103,7 @@ pub fn day_eight() {
             .sum::<i32>();
     }
 
-    println!("\tNum of 1, 4, 7 or 8: {}", sum_1478);
+    println!("\tNumber of 1s, 4s, 7s or 8s: {}", sum_1478);
 
     println!("Part 2");
     let mut sum = 0;
