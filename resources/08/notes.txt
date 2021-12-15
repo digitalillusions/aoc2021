@@ -18,9 +18,46 @@ unique
 
 rest
 
-0: 6 a b c   e f g
 2: 5 a   c d e   g
 3: 5 a   c d   f g
 5: 5 a b   d   f g
+
+0: 6 a b c   e f g
 6: 6 a b   d e f g
 9: 6 a b c d   f g
+
+step 1
+7: 3 a   c     f
+6: 6 a b   d e f g
+condition: len intersection 2
+
+known 1, 4, 6, 7, 8
+
+
+step 2
+4: 4   b c d   f
+9: 6 a b c d   f g
+condition: len intersection 4
+known 1, 4, 6, 7, 8, 9
+
+step 3
+0: 6 a b c   e f g
+condition: remaining 6 digit must be 0
+known 0, 1, 4, 6, 7, 8, 9
+
+step 4
+7: 3 a   c     f
+3: 5 a   c d   f g
+condition: len intersection 3
+known 0, 1, 3, 4, 6, 7, 8, 9
+
+step 5
+4: 4   b c d   f
+5: 5 a b   d   f g
+condition: len intersection 3
+known 0, 1, 3, 4, 5, 6, 7, 8, 9
+
+step 6
+2: 5 a   c d e   g
+condition: last remaining digit must be 2
+known 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
