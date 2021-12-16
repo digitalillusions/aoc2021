@@ -18,6 +18,7 @@ fn main() {
             "12" => day_twelve::day_twelve(),
             "13" => day_thirteen::day_thirteen(),
             "14" => day_fourteen::day_fourteen(),
+            "16" => day_sixteen::day_sixteen(),
             _ => println!("\tNot implemented yet"),
         };
     } else {
