@@ -1,20 +1,6 @@
-mod day_eight;
-mod day_four;
-mod day_fourteen;
-mod day_one;
-mod day_thirteen;
-mod day_three;
-mod day_twelve;
-mod day_two;
+mod days;
 
-use day_eight::day_eight;
-use day_four::day_four;
-use day_fourteen::day_fourteen;
-use day_one::day_one;
-use day_thirteen::day_thirteen;
-use day_three::day_three;
-use day_twelve::day_twelve;
-use day_two::day_two;
+use days::*;
 
 use std::env;
 
@@ -24,14 +10,14 @@ fn main() {
     if let Some(day) = args.get(1) {
         println!("Running day {}", day);
         match day.as_str() {
-            "01" => day_one(),
-            "02" => day_two(),
-            "03" => day_three(),
-            "04" => day_four(),
-            "08" => day_eight(),
-            "12" => day_twelve(),
-            "13" => day_thirteen(),
-            "14" => day_fourteen(),
+            "01" => day_one::day_one(),
+            "02" => day_two::day_two(),
+            "03" => day_three::day_three(),
+            "04" => day_four::day_four(),
+            "08" => day_eight::day_eight(),
+            "12" => day_twelve::day_twelve(),
+            "13" => day_thirteen::day_thirteen(),
+            "14" => day_fourteen::day_fourteen(),
             _ => println!("\tNot implemented yet"),
         };
     } else {
