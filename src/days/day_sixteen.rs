@@ -36,7 +36,15 @@ fn parse_message(current_message: &str) -> Option<u32> {
             let value = u32::from_str_radix(binary_value.as_str(), 2).ok()?;
             println!("Value: {}", value);
         }
-        _ => println!("Do other"),
+        _ => {
+            let i = submessage.get(0..1)?;
+            match i {
+                "0" => {}
+                "1" => {}
+                _ => {}
+            }
+        }
     }
-    Some(0)
+
+    Some(version)
 }
