@@ -10,15 +10,15 @@ pub fn day_sixteen() {
         .map(|x| format!("{:04b}", x.to_digit(16).unwrap()))
         .collect::<Vec<_>>()
         .join("");
-    println!("Code {}", hexcode);
-    println!("Binary {}", binary);
+    // println!("Code {}", hexcode);
+    // println!("Binary {}", binary);
 
     println!("Part 1");
     let x = parse_message(&binary).unwrap();
-    println!("\tSum of version numbers {}", x.1);
+    println!("\tSum of version numbers: {}", x.1);
 
     println!("Part 2");
-    println!("\tOutput value {}", x.2);
+    println!("\tOutput value: {}", x.2);
 }
 
 fn parse_message(current_message: &str) -> Option<(&str, u64, u64)> {
@@ -27,7 +27,7 @@ fn parse_message(current_message: &str) -> Option<(&str, u64, u64)> {
     let mut submessage = current_message.get(6..)?;
     let mut value = 0;
     let mut sub_values = Vec::new();
-    println!("\tVersion: {}, Type ID: {}", version, typeid);
+    // println!("\tVersion: {}, Type ID: {}", version, typeid);
 
     // Part 1
     match typeid {
@@ -39,7 +39,7 @@ fn parse_message(current_message: &str) -> Option<(&str, u64, u64)> {
             }
             binary_value += submessage.get(1..5)?;
             value = u64::from_str_radix(binary_value.as_str(), 2).ok()?;
-            println!("\tValue: {}", value);
+            // println!("\tValue: {}", value);
             return Some((submessage.get(5..)?, version, value));
         }
         _ => {
@@ -50,7 +50,7 @@ fn parse_message(current_message: &str) -> Option<(&str, u64, u64)> {
                     let subpacket_length = usize::from_str_radix(submessage.get(..15)?, 2).ok()?;
                     submessage = submessage.get(15..)?;
                     let mut subpacket = submessage.get(..subpacket_length)?;
-                    println!("\tLength type ID: 0, Subpacket Length {}", subpacket_length);
+                    // println!("\tLength type ID: 0, Subpacket Length {}", subpacket_length);
                     while let Some((x, version_sum, value)) = parse_message(subpacket) {
                         version += version_sum;
                         subpacket = x;
@@ -60,10 +60,10 @@ fn parse_message(current_message: &str) -> Option<(&str, u64, u64)> {
                 }
                 "1" => {
                     let num_subpackets = usize::from_str_radix(submessage.get(..11)?, 2).ok()?;
-                    println!(
-                        "\tLength type ID: 1, Number of Subpackets {}",
-                        num_subpackets
-                    );
+                    // println!(
+                    //     "\tLength type ID: 1, Number of Subpackets {}",
+                    //     num_subpackets
+                    // );
                     submessage = submessage.get(11..)?;
                     for _ in 0..num_subpackets {
                         let x = parse_message(submessage)?;
