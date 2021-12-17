@@ -14,31 +14,29 @@ pub fn day_sixteen() {
     println!("Binary {}", binary);
 
     // iterate only while there is still at least a version (3 bits) and packet id (3 bits) and at least one more bit remaining
-    let mut i = 0;
-    while i < binary.len() - 7 {
-        let version = u32::from_str_radix(&binary[i..i + 3], 2).unwrap();
-        let typeid = u32::from_str_radix(&binary[i + 3..i + 6], 2).unwrap();
-
-        println!("Version: {}, Type ID: {}", version, typeid);
-        if typeid == 4 {
-            let mut j = 0;
-            let mut leading_digit = "1";
-            let mut binary_value = String::new();
-            while leading_digit == "1" {
-                leading_digit = &binary[i + j + 6..i + j + 7];
-                binary_value += &binary[i + j + 7..i + j + 11].to_string();
-                j += 5;
-            }
-            i += j + 6;
-            println!("Value: {}", binary_value);
-            println!(
-                "Value dec: {}",
-                u32::from_str_radix(&binary_value, 2).unwrap()
-            );
-        } else {
-        }
-    }
+    parse_message(&binary);
 
     println!("Part 1");
     println!("Part 2");
+}
+
+fn parse_message(current_message: &str) -> Option<u32> {
+    let version = u32::from_str_radix(current_message.get(0..3)?, 2).ok()?;
+    let typeid = u32::from_str_radix(current_message.get(3..6)?, 2).ok()?;
+    let mut submessage = current_message.get(6..)?;
+
+    match typeid {
+        4 => {
+            let mut binary_value = String::new();
+            while submessage.get(0..1)? == "1" {
+                binary_value += submessage.get(1..5)?;
+                submessage = submessage.get(5..)?;
+            }
+            binary_value += submessage.get(1..5)?;
+            let value = u32::from_str_radix(binary_value.as_str(), 2).ok()?;
+            println!("Value: {}", value);
+        }
+        _ => println!("Do other"),
+    }
+    Some(0)
 }
