@@ -38,6 +38,7 @@ pub fn day_nineteen() {
             if i == j {
                 continue;
             }
+            let rotations_j = rotations(other_scanner);
         }
     }
 
@@ -58,17 +59,33 @@ pub fn day_nineteen() {
 
 
     */
-    println!("Scanners {:?}", scanner_coords);
 }
 
-fn rotations(points: &Vec<[i32; 3]>) {
-    let mut iterators = Vec::new();
+fn rotations(points: &Vec<Vec3>) -> Vec<Vec<Vec3>> {
+    let mut rotated_points = Vec::new();
+    // All possible combinations of 2 axes
     for i in 0..3 {
-        let mut rot_axis = Vec3::zero();
-        rot_axis[i] = 1;
-        iterators.push(points.iter().map(|x| {
-            let mut y = x;
-            for j in 0..3 {}
-        }))
+        for j in 0..3 {
+            if i == j {
+                continue;
+            }
+            // With all combinations of orientations, the third axis is computed using th right hand rule from a cross product
+            for k in [-1, 1] {
+                for l in [-1, 1] {
+                    let mut rot_axis = Vec3::zero();
+                    rot_axis[i] = k;
+                    let mut second_axis = Vec3::zero();
+                    second_axis[j] = l;
+                    rotated_points.push(
+                        points
+                            .iter()
+                            .map(|x| x.rotate(rot_axis, second_axis))
+                            .collect::<Vec<_>>(),
+                    );
+                }
+            }
+        }
     }
+
+    rotated_points
 }

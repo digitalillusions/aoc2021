@@ -2,27 +2,22 @@ use std::cmp::PartialEq;
 use std::convert::From;
 use std::ops::{Add, Div, Index, IndexMut, Mul, Sub};
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct Vec3 {
     co: [i32; 3],
 }
 
 impl Vec3 {
-    pub fn rotate(self, axis: Vec3, second_axis: Vec3) -> Self {
-        let third_axis = axis.cross(&second_axis);
-        [
-            self.dot(&axis),
-            self.dot(&second_axis),
-            self.dot(&third_axis),
-        ]
-        .into()
+    pub fn rotate(&self, axis: Vec3, second_axis: Vec3) -> Self {
+        let third_axis = axis.cross(second_axis.clone());
+        [self.dot(axis), self.dot(second_axis), self.dot(third_axis)].into()
     }
 
-    pub fn dot(&self, other: &Vec3) -> i32 {
+    pub fn dot(&self, other: Vec3) -> i32 {
         return self[0] * other[0] + self[1] * other[1] + self[2] * other[2];
     }
 
-    pub fn cross(&self, axis: &Vec3) -> Self {
+    pub fn cross(&self, axis: Vec3) -> Self {
         [
             self[0] * axis[1] - self[1] * axis[0],
             self[2] * axis[0] - self[0] * axis[2],
