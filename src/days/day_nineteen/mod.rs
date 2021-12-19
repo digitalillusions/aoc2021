@@ -39,6 +39,7 @@ pub fn day_nineteen() {
                 continue;
             }
             let rotations_j = rotations(other_scanner);
+            println!("Number of rotations {}", rotations_j.len());
         }
     }
 
@@ -79,7 +80,7 @@ fn rotations(points: &Vec<Vec3>) -> Vec<Vec<Vec3>> {
                     rotated_points.push(
                         points
                             .iter()
-                            .map(|x| x.rotate(rot_axis, second_axis))
+                            .map(|x| x.rotate(rot_axis.clone(), second_axis.clone()))
                             .collect::<Vec<_>>(),
                     );
                 }
