@@ -64,6 +64,8 @@ pub fn day_nineteen() {
 fn rotations(points: &Vec<[i32; 3]>) {
     let mut iterators = Vec::new();
     for i in 0..3 {
+        let mut rot_axis = Vec3::zero();
+        rot_axis[i] = 1;
         iterators.push(points.iter().map(|x| {
             let mut y = x;
             for j in 0..3 {}

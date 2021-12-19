@@ -1,6 +1,6 @@
 use std::cmp::PartialEq;
 use std::convert::From;
-use std::ops::{Add, Div, Index, Mul, Sub};
+use std::ops::{Add, Div, Index, IndexMut, Mul, Sub};
 
 #[derive(Debug)]
 pub struct Vec3 {
@@ -8,7 +8,7 @@ pub struct Vec3 {
 }
 
 impl Vec3 {
-    fn rotate(self, axis: Vec3, second_axis: Vec3) -> Self {
+    pub fn rotate(self, axis: Vec3, second_axis: Vec3) -> Self {
         let third_axis = axis.cross(&second_axis);
         [
             self.dot(&axis),
@@ -18,17 +18,25 @@ impl Vec3 {
         .into()
     }
 
-    fn dot(&self, other: &Vec3) -> i32 {
+    pub fn dot(&self, other: &Vec3) -> i32 {
         return self[0] * other[0] + self[1] * other[1] + self[2] * other[2];
     }
 
-    fn cross(&self, axis: &Vec3) -> Self {
+    pub fn cross(&self, axis: &Vec3) -> Self {
         [
             self[0] * axis[1] - self[1] * axis[0],
             self[2] * axis[0] - self[0] * axis[2],
             self[1] * axis[2] - self[2] * axis[1],
         ]
         .into()
+    }
+
+    pub fn zero() -> Self {
+        [0, 0, 0].into()
+    }
+
+    pub fn new(x: [i32; 3]) -> Self {
+        Self { co: x }
     }
 }
 
@@ -82,5 +90,11 @@ impl Index<usize> for Vec3 {
     type Output = i32;
     fn index(&self, i: usize) -> &Self::Output {
         &self.co[i]
+    }
+}
+
+impl IndexMut<usize> for Vec3 {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.co[index]
     }
 }
