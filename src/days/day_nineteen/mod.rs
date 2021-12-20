@@ -42,25 +42,27 @@ pub fn day_nineteen() {
         {
             let rotations_j = rotations(other_scanner);
             println!("Comparing scanner {} and scanner {}", i, j);
-            for point_i in scanner {
-                for point_j in other_scanner {
-                    let offset_ij = point_j - point_i;
-                    let count_matching_points = other_scanner
-                        .iter()
-                        .filter(|x_j| {
-                            scanner
-                                .iter()
-                                .map(|&x_i| (x_i + offset_ij.clone() - *x_j.clone()).abs())
-                                .min()
-                                .unwrap()
-                                == Vec3::zero()
-                        })
-                        .count();
-                    if count_matching_points >= 2 {
-                        println!(
-                            "Found match between scanner {} and scanner {} with offset {:?}",
-                            i, j, offset_ij
-                        );
+            for other_rotated_scanner in rotations_j {
+                for point_i in scanner {
+                    for point_j in other_rotated_scanner.iter() {
+                        let offset_ij = point_j - point_i;
+                        let count_matching_points = other_scanner
+                            .iter()
+                            .filter(|x_j| {
+                                scanner
+                                    .iter()
+                                    .map(|&x_i| (x_i + offset_ij.clone() - *x_j.clone()).abs())
+                                    .min()
+                                    .unwrap()
+                                    == Vec3::zero()
+                            })
+                            .count();
+                        if count_matching_points >= 2 {
+                            println!(
+                                "Found match between scanner {} and scanner {} with offset {:?}",
+                                i, j, offset_ij
+                            );
+                        }
                     }
                 }
             }
