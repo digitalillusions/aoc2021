@@ -2,7 +2,7 @@ use std::cmp::PartialEq;
 use std::convert::From;
 use std::ops::{Add, Div, Index, IndexMut, Mul, Sub};
 
-#[derive(Debug, Clone, Copy, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq, PartialOrd, Ord, Hash)]
 pub struct Vec3 {
     co: [i32; 3],
 }

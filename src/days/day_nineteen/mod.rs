@@ -1,5 +1,6 @@
 mod vec3;
 
+use std::collections::HashSet;
 use std::fs;
 use std::io::{self, BufRead};
 use vec3::Vec3;
