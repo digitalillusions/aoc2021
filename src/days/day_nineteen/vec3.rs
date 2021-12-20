@@ -1,4 +1,3 @@
-use std::cmp::Ordering;
 use std::cmp::PartialEq;
 use std::convert::From;
 use std::ops::{Add, Div, Index, IndexMut, Mul, Sub};
@@ -24,9 +23,9 @@ impl Vec3 {
 
     pub fn cross(&self, axis: Vec3) -> Self {
         [
-            self[0] * axis[1] - self[1] * axis[0],
-            self[2] * axis[0] - self[0] * axis[2],
             self[1] * axis[2] - self[2] * axis[1],
+            self[2] * axis[0] - self[0] * axis[2],
+            self[0] * axis[1] - self[1] * axis[0],
         ]
         .into()
     }

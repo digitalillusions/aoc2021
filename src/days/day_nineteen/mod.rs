@@ -27,7 +27,7 @@ pub fn day_nineteen() {
         }
     }
 
-    let mut scanner_coords: Vec<_> = scanners
+    let _scanner_coords: Vec<_> = scanners
         .iter()
         .enumerate()
         .map(|(i, _)| if i == 0 { Some((0, 0, 0)) } else { None })
@@ -46,7 +46,7 @@ pub fn day_nineteen() {
                 for point_i in scanner {
                     for point_j in other_rotated_scanner.iter() {
                         let offset_ij = point_j - point_i;
-                        let count_matching_points = other_scanner
+                        let count_matching_points = other_rotated_scanner
                             .iter()
                             .filter(|x_j| {
                                 scanner
@@ -57,7 +57,7 @@ pub fn day_nineteen() {
                                     == Vec3::zero()
                             })
                             .count();
-                        if count_matching_points >= 2 {
+                        if count_matching_points >= 12 {
                             println!(
                                 "Found match between scanner {} and scanner {} with offset {:?}",
                                 i, j, offset_ij
@@ -68,28 +68,11 @@ pub fn day_nineteen() {
             }
         }
     }
-
-    /*
-    Algorithm idea
-    for all points in i
-        for all possible rotations r
-            for all rotated points in j
-                compute translation from i to j
-                recurse into remaining points in i and j
-
-    Recursion
-    for all points in i
-        for all points in j
-            compute difference of i and j
-            if zero
-                recurse without i and j
-
-
-    */
 }
 
 fn rotations(points: &Vec<Vec3>) -> Vec<Vec<Vec3>> {
     let mut rotated_points = Vec::new();
+    // println!("Original {:?}", points[0]);
     // All possible combinations of 2 axes
     for i in 0..3 {
         for j in 0..3 {
@@ -103,12 +86,24 @@ fn rotations(points: &Vec<Vec3>) -> Vec<Vec<Vec3>> {
                     rot_axis[i] = k;
                     let mut second_axis = Vec3::zero();
                     second_axis[j] = l;
+
                     rotated_points.push(
                         points
                             .iter()
                             .map(|x| x.rotate(rot_axis.clone(), second_axis.clone()))
                             .collect::<Vec<_>>(),
                     );
+                    // println!(
+                    //     "Axis 1 {:?}\nAxis 2 {:?}\nAxis 3 {:?}",
+                    //     rot_axis,
+                    //     second_axis,
+                    //     rot_axis.cross(second_axis)
+                    // );
+                    // println!(
+                    //     "{}, {:?}\n",
+                    //     rotated_points.len(),
+                    //     rotated_points.last().unwrap()[0]
+                    // );
                 }
             }
         }
