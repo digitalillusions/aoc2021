@@ -1,8 +1,9 @@
+use std::cmp::Ordering;
 use std::cmp::PartialEq;
 use std::convert::From;
 use std::ops::{Add, Div, Index, IndexMut, Mul, Sub};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq, PartialOrd, Ord)]
 pub struct Vec3 {
     co: [i32; 3],
 }
@@ -15,6 +16,10 @@ impl Vec3 {
 
     pub fn dot(&self, other: Vec3) -> i32 {
         return self[0] * other[0] + self[1] * other[1] + self[2] * other[2];
+    }
+
+    pub fn abs(&self) -> Vec3 {
+        return [self[0].abs(), self[1].abs(), self[2].abs()].into();
     }
 
     pub fn cross(&self, axis: Vec3) -> Self {
@@ -45,11 +50,23 @@ impl From<[i32; 3]> for Vec3 {
 
 // Equality check
 
-impl PartialEq<Vec3> for Vec3 {
-    fn eq(&self, other: &Vec3) -> bool {
-        (self[0] == other[1]) && (self[1] == other[1]) && (self[1] == other[2])
-    }
-}
+// impl PartialEq for Vec3 {
+//     fn eq(&self, other: &Self) -> bool {
+//         self.co == other.co
+//     }
+// }
+//
+// impl Ord for Vec3 {
+//     fn cmp(&self, other: &Self) -> Ordering {
+//         self.co.cmp(&other.co)
+//     }
+// }
+//
+// impl PartialOrd for Vec3 {
+//     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+//         Some(self.cmp(other))
+//     }
+// }
 
 // Operators
 
@@ -59,10 +76,22 @@ impl Add<Vec3> for Vec3 {
         [self[0] + rhs[0], self[1] + rhs[1], self[2] + rhs[2]].into()
     }
 }
+impl Add<&Vec3> for &Vec3 {
+    type Output = Vec3;
+    fn add(self, rhs: &Vec3) -> Self::Output {
+        [self[0] + rhs[0], self[1] + rhs[1], self[2] + rhs[2]].into()
+    }
+}
 
 impl Sub<Vec3> for Vec3 {
     type Output = Vec3;
     fn sub(self, rhs: Vec3) -> Self::Output {
+        [self[0] - rhs[0], self[1] - rhs[1], self[2] - rhs[2]].into()
+    }
+}
+impl Sub<&Vec3> for &Vec3 {
+    type Output = Vec3;
+    fn sub(self, rhs: &Vec3) -> Self::Output {
         [self[0] - rhs[0], self[1] - rhs[1], self[2] - rhs[2]].into()
     }
 }
