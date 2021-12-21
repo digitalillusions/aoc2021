@@ -21,6 +21,10 @@ impl Vec3 {
         return [self[0].abs(), self[1].abs(), self[2].abs()].into();
     }
 
+    pub fn sum(&self) -> i32 {
+        self.co[0] + self.co[1] + self.co[2]
+    }
+
     pub fn cross(&self, axis: Vec3) -> Self {
         [
             self[1] * axis[2] - self[2] * axis[1],
