@@ -28,27 +28,7 @@ pub fn day_nineteen() {
         }
     }
 
-    let _scanner_coords: Vec<_> = scanners
-        .iter()
-        .enumerate()
-        .map(|(i, _)| if i == 0 { Some(Vec3::zero()) } else { None })
-        .collect();
-
-    // let mut count_matching_beacons = 0;
-    // let mut total_readings = 0;
-    // for (i, scanner) in scanners.iter().enumerate() {
-    //     total_readings += scanner.len();
-    //     for (other_scanner, j) in scanners
-    //         .get(i + 1..scanners.len())
-    //         .unwrap()
-    //         .iter()
-    //         .zip(i + 1..scanners.len())
-    //     {
-    //         if let Some(num_match) = check_match_ij(scanner, other_scanner, i, j) {
-    //             count_matching_beacons += num_match;
-    //         }
-    //     }
-    // }
+    println!("Part 1");
 
     let scanner_indices: HashSet<_> = (0..scanners.len()).collect();
     let mut total_beacons = HashSet::new();
@@ -65,13 +45,21 @@ pub fn day_nineteen() {
         let mut newly_found = HashSet::new();
         for i in check_next {
             for &j in scanner_indices.difference(&already_known) {
-                println!("Comparing scanner {} and scanner {}", i, j);
+                println!("\tComparing scanner {} and scanner {}", i, j);
                 if let Some((beacons, offset_ij)) = check_match_ij(&scanners[i], &scanners[j]) {
                     println!(
-                        "Found match between scanner {} and scanner {} with offset {:?}",
+                        "\tFound match between scanner {} and scanner {} with offset {:?}",
                         i, j, offset_ij
                     );
-                    scanner_coords.insert(j, Vec3::zero() - offset_ij);
+                    if let Some(value) = scanner_coords.get(&j) {
+                        println!(
+                            "\t\tEntry already exsits\n\tNew location {:?}, old location {:?}",
+                            Vec3::zero() - offset_ij,
+                            value
+                        );
+                    } else {
+                        scanner_coords.insert(j, Vec3::zero() - offset_ij);
+                    }
                     newly_found.insert(j);
                     total_beacons.extend(beacons.clone());
                     scanners[j] = beacons;
@@ -82,18 +70,21 @@ pub fn day_nineteen() {
         check_next = newly_found;
     }
 
-    println!("Already known {:?}", already_known);
-    println!("Scanner Coords {:?}", scanner_coords);
+    println!("\tAlready known {:?}", already_known);
+    println!("\tScanner Coords {:?}", scanner_coords);
 
-    println!("Part 1");
     println!("\tTotal number of beacons {:?}", total_beacons.len());
 
     println!("Part 2");
     let mut manhattan_distance = 0;
-    for i in scanner_coords.values() {
-        for j in scanner_coords.values() {
-            if (i - j).abs().sum() > manhattan_distance {
-                manhattan_distance = (i - j).abs().sum();
+    for (i, vec_i) in scanner_coords.iter() {
+        for (j, vec_j) in scanner_coords.iter() {
+            if (vec_i - vec_j).abs().sum() > manhattan_distance {
+                manhattan_distance = (vec_i - vec_j).abs().sum();
+                println!(
+                    "\tLarger distance of {} between scanner {} and scanner {}\n\t\tCoords {:?} and {:?}",
+                    manhattan_distance, i, j, vec_i, vec_j
+                );
             }
         }
     }
