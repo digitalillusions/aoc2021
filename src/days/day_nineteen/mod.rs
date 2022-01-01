@@ -107,7 +107,7 @@ fn check_match_ij(
                     .filter(|x_j| {
                         scanner
                             .iter()
-                            .map(|&x_i| (x_i + offset_ij.clone() - *x_j.clone()).abs())
+                            .map(|x_i| (x_i.clone() + offset_ij.clone() - (*x_j).clone()).abs())
                             .min()
                             .unwrap()
                             == Vec3::zero()
@@ -116,7 +116,7 @@ fn check_match_ij(
                 if count_matching_beacons >= 12 {
                     let transformed_beacons: HashSet<_> = other_rotated_scanner
                         .iter()
-                        .map(|&x| x - offset_ij.clone())
+                        .map(|x| x.clone() - offset_ij.clone())
                         .collect();
                     return Some((transformed_beacons, offset_ij));
                 }
@@ -147,7 +147,7 @@ fn rotations(points: &HashSet<Vec3>) -> Vec<HashSet<Vec3>> {
                     rotated_points.push(
                         points
                             .iter()
-                            .map(|x| x.rotate(rot_axis.clone(), second_axis.clone()))
+                            .map(|x| x.rotate(&rot_axis, &second_axis))
                             .collect::<HashSet<_>>(),
                     );
                     // println!(
