@@ -14,6 +14,7 @@ fn main() {
             "02" => day_two::day_two(),
             "03" => day_three::day_three(),
             "04" => day_four::day_four(),
+            "05" => day_five::day_five(),
             "08" => day_eight::day_eight(),
             "12" => day_twelve::day_twelve(),
             "13" => day_thirteen::day_thirteen(),

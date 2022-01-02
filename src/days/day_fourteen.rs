@@ -35,6 +35,7 @@ pub fn day_fourteen() {
 
     let mut template_pair_counts = HashMap::new();
     for ab in template.windows(2) {
+        // Template is the initial template string
         template_pair_counts
             .entry((ab[0], ab[1]))
             .and_modify(|x| *x += 1)
