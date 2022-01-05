@@ -1,34 +1,32 @@
 use std::{collections::HashMap, fs};
 
 pub fn day_six() {
-    let file_str = fs::read_to_string("resources/06/example1.txt").unwrap();
+    let file_str = fs::read_to_string("resources/06/sample.txt").unwrap();
     let initial_state: Vec<_> = file_str
         .trim()
         .split(",")
-        .map(|x| x.parse::<i32>().unwrap())
+        .map(|x| x.parse::<i64>().unwrap())
         .collect();
     let child_map: HashMap<_, _> = (1..6)
         .map(|x| {
-            println!("\nstart days {}", x);
-            (x, recurse_lanternfish(x, 18))
+            println!("\tstart days {}", x);
+            (x, recurse_lanternfish(x, 256))
         })
         .collect();
     let total_children = initial_state
         .iter()
         .map(|x| child_map.get(x).unwrap())
-        .sum::<i32>();
-    println!("{:?}", total_children);
-    println!("{:?}", child_map);
+        .sum::<i64>();
+    println!("Total children: {}", total_children);
 }
 
-fn recurse_lanternfish(internal_timer: i32, remaining_days: i32) -> i32 {
-    (0..=remaining_days - internal_timer)
+fn recurse_lanternfish(current_day: i64, total_days: i64) -> i64 {
+    (current_day + 1..=total_days)
         .step_by(6 + 1)
-        //.rev()
         .map(|i| {
-            println!("8 at {} days", i);
-            recurse_lanternfish(8, i)
+            // println!("spawn new after {} days", i);
+            recurse_lanternfish(i + 8, total_days)
         })
-        .sum::<i32>()
+        .sum::<i64>()
         + 1
 }
