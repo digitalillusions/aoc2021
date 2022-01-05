@@ -4,6 +4,7 @@ pub mod day_four;
 pub mod day_fourteen;
 pub mod day_nineteen;
 pub mod day_one;
+pub mod day_six;
 pub mod day_sixteen;
 pub mod day_thirteen;
 pub mod day_three;
