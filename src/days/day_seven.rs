@@ -8,6 +8,9 @@ pub fn day_seven() {
         .unwrap();
 
     horizontal_positions.sort();
+    let max_move_distance =
+        horizontal_positions.iter().max().unwrap() - horizontal_positions.iter().min().unwrap();
+
     let fuels_linear: Vec<_> = horizontal_positions
         .iter()
         .map(|x| {
@@ -17,11 +20,10 @@ pub fn day_seven() {
                 .sum::<u64>()
         })
         .collect();
-    println!("{:?}", horizontal_positions);
-    println!("{:?}", fuels_linear.iter().min().unwrap());
-
-    let max_move_distance =
-        horizontal_positions.iter().max().unwrap() - horizontal_positions.iter().min().unwrap();
+    println!(
+        "Part 1\n\tMinimum Fuel Required {}",
+        fuels_linear.iter().min().unwrap()
+    );
 
     let mut last = 0;
     let mut move_distance_lookup = Vec::new();
@@ -29,20 +31,22 @@ pub fn day_seven() {
         move_distance_lookup.push(i + last);
         last = *move_distance_lookup.last().unwrap();
     }
-    let fuels_accumulating: Vec<_> = horizontal_positions
-        .iter()
+    let fuels_accumulating: Vec<_> = (horizontal_positions.iter().min().unwrap().clone()
+        ..=horizontal_positions.iter().max().unwrap().clone())
         .map(|x| {
             horizontal_positions
                 .iter()
                 .map(|y| {
-                    let z = (*x as i64 - *y as i64).abs() as u64;
+                    let z = (x as i64 - *y as i64).abs() as u64;
                     move_distance_lookup[z as usize]
                 })
                 .sum::<u64>()
         })
         .collect();
 
-    println!("{:?}", move_distance_lookup);
-    println!("{:?}", fuels_accumulating);
-    println!("{:?}", fuels_accumulating.iter().min().unwrap());
+    // println!("{:?}", move_distance_lookup);
+    println!(
+        "Part 2\n\tMinimum Fuel Required {}",
+        fuels_accumulating.iter().min().unwrap()
+    );
 }
