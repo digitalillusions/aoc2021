@@ -50,6 +50,6 @@ pub fn day_ten(){
 
 	completion_scores.sort();
 
-	println!("Total score: {}", total_penalty);
-	println!("Middle completion score: {}", completion_scores.get(completion_scores.len()/2).unwrap());
+	println!("Part 1\n\tTotal score: {}", total_penalty);
+	println!("Part 2\n\tMiddle completion score: {}", completion_scores.get(completion_scores.len()/2).unwrap());
 }
