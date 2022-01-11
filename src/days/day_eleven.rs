@@ -41,14 +41,14 @@ pub fn day_eleven() {
             num_flashes += 1;
 
             for k in 0..=2 {
-                if let Some((n_i, Some(line))) = (i + k)
+                if let Some((n_i, line)) = (i + k)
                     .checked_sub(1)
-                    .and_then(|x| Some((x, dumbo_octopuses.get_mut(x))))
+                    .and_then(|x| dumbo_octopuses.get_mut(x).map(|z| (x, z)))
                 {
                     for l in 0..=2 {
-                        if let Some((n_j, Some(energy))) = (j + l)
+                        if let Some((n_j, energy)) = (j + l)
                             .checked_sub(1)
-                            .and_then(|y| Some((y, line.get_mut(y))))
+                            .and_then(|y| line.get_mut(y).map(|z| (y, z)))
                         {
                             // println!("\t{}, {}", n_i, n_j);
                             *energy += 1;
