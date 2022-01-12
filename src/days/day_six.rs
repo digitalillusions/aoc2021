@@ -5,8 +5,9 @@ pub fn day_six() {
     let initial_state: Vec<_> = file_str
         .trim()
         .split(",")
-        .map(|x| x.parse::<i64>().unwrap())
-        .collect();
+        .map(str::parse::<i64>)
+        .collect::<Result<_, _>>()
+        .unwrap();
     let child_map: HashMap<_, _> = (1..6)
         .map(|x| {
             println!("\tstart days {}", x);
