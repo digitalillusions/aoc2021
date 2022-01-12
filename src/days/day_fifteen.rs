@@ -14,6 +14,52 @@ pub fn day_fifteen() {
         })
         .collect();
 
+    println!("Part 1");
+    find_shortest_path(&grid);
+
+    let mut new_grid = Vec::new();
+
+    for line in grid {
+        new_grid.push(Vec::new());
+        for i in 0..5 {
+            new_grid.last_mut().unwrap().extend(line.iter().map(|x| {
+                let new_val = (x + i) % 10;
+                if new_val < *x {
+                    new_val + 1
+                } else {
+                    new_val
+                }
+            }));
+        }
+    }
+
+    let temp_grid = new_grid.clone();
+    for i in 1..5 {
+        for line in &temp_grid {
+            new_grid.push(
+                line.iter()
+                    .map(|x| {
+                        let new_val = (x + i) % 10;
+                        if new_val < *x {
+                            new_val + 1
+                        } else {
+                            new_val
+                        }
+                    })
+                    .collect(),
+            );
+        }
+    }
+
+    // for line in &new_grid {
+    //     println!("{:?}", line);
+    // }
+
+    println!("Part 2");
+    find_shortest_path(&new_grid);
+}
+
+fn find_shortest_path(grid: &Vec<Vec<u32>>) {
     let mut minimum_distance: HashMap<_, _> = grid
         .iter()
         .enumerate()
@@ -23,11 +69,8 @@ pub fn day_fifteen() {
                 .map(move |(j, _)| ((i, j), u32::MAX))
         })
         .collect();
-
     let mut next_node = Some((0 as usize, 0 as usize));
     let mut already_visited = HashSet::new();
-
-    // Init minimum distance for starting node to 0
     *minimum_distance.get_mut(&next_node.unwrap()).unwrap() = 0;
     while let Some(node) = next_node {
         already_visited.insert(node);
@@ -44,7 +87,7 @@ pub fn day_fifteen() {
                     grid.get(n_node.0).unwrap().get(n_node.1).unwrap() + cur_value.clone();
                 if *value > new_value {
                     *value = new_value;
-                    already_visited.remove(n_node);
+                    // already_visited.remove(n_node);
                 }
             }
         });
@@ -54,12 +97,15 @@ pub fn day_fifteen() {
             .filter(|(x, _)| !already_visited.contains(&x))
             .min()
             .map(|x| *x.0);
+        print!(
+            "\r\tProgress {:.2}%",
+            already_visited.len() as f32 / minimum_distance.keys().len() as f32 * 100.
+        )
     }
-    println!("{:?}", minimum_distance);
-
+    println!("");
     let lower_corner = (grid.len() - 1, grid.last().unwrap().len() - 1);
     println!(
-        "Part 1\n\tDistance to lower right corner: {}",
+        "\tDistance to lower right corner: {}",
         minimum_distance.get(&lower_corner).unwrap()
     );
 }
