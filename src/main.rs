@@ -24,6 +24,7 @@ fn main() {
             "12" => day_twelve::day_twelve(),
             "13" => day_thirteen::day_thirteen(),
             "14" => day_fourteen::day_fourteen(),
+            "15" => day_fifteen::day_fifteen(),
             "16" => day_sixteen::day_sixteen(),
             "19" => day_nineteen::day_nineteen(),
             "all" => run_all(),
@@ -65,7 +66,8 @@ fn run_all() {
     day_thirteen::day_thirteen();
     println!("Running day {}", 14);
     day_fourteen::day_fourteen();
-
+    println!("Running day {}", 15);
+    day_fifteen::day_fifteen();
     println!("Running day {}", 16);
     day_sixteen::day_sixteen();
 
