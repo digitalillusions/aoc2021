@@ -26,6 +26,7 @@ fn main() {
             "14" => day_fourteen::day_fourteen(),
             "15" => day_fifteen::day_fifteen(),
             "16" => day_sixteen::day_sixteen(),
+            "17" => day_seventeen::day_seventeen(),
             "19" => day_nineteen::day_nineteen(),
             "all" => run_all(),
             _ => println!("\tNot implemented yet"),
@@ -70,6 +71,8 @@ fn run_all() {
     day_fifteen::day_fifteen();
     println!("Running day {}", 16);
     day_sixteen::day_sixteen();
+    println!("Running day {}", 17);
+    day_seventeen::day_seventeen();
 
     println!("Running day {}", 19);
     day_nineteen::day_nineteen();
