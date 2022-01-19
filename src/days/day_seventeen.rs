@@ -23,5 +23,5 @@ pub fn day_seventeen() {
     let x_range = ranges[0].parse::<i32>().unwrap()..ranges[1].parse::<i32>().unwrap();
     let y_range = ranges[2].parse::<i32>().unwrap()..ranges[3].parse::<i32>().unwrap();
 
-    println!("{:?}, {:?}", x_range, y_range);
+    println!("{x_range:?}, {y_range:?}");
 }
